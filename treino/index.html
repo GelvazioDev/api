@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Test Api</title>
+    </head>
+    <script src="js/api.js" defer></script>
+    <script>
+        function trataRetornoTreino(aDados){
+            let body = document.querySelector(".containerTable-body");
+            
+            // limpa a tabela atual
+            body.innerHTML = "";
+            aDados.forEach(function(oDados, key) {
+                const url       = oDados.gifUrl;
+                const equipment = oDados.equipment;
+                const name      = oDados.name;
+                const target    = oDados.target;
+                
+                // adiciona as colunas da tabela da consulta de folha de pagamento
+                body.innerHTML += `<tr>
+                    <td><img src="` + url + `" /></td>
+                    <td>` + equipment + `</td>
+                    <td>` + name + `</td>
+                    <td>` + target + `</td>
+                </tr>`;
+            });
+    }
+    
+    function callApiAcademia(port){
+        callApi("GET", port, undefined, function(data){
+            trataRetornoTreino(data);
+        }, getHeadersTreino());
+    }
+
+    function getHeadersTreino() {
+        return new Headers({
+            "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+            "Access-Control-Allow-Headers": "X-PINGOTHER, Content-Type",
+            "Access-Control-Max-Age": "86400",
+            "Accept": "Application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": true,
+            "Content-Type": "Application/json",
+            "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
+            "X-RapidAPI-Key" : "1a05d802d0msh3df559e01706102p1e65d5jsneb35d4f58676"
+        });
+    }
+</script>
+<style>
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .treinos {
+        display: flex;
+        gap:5px;
+    }
+    
+    button {
+        padding: 10px;
+        background-color: aquamarine;
+        border-radius: 5px;
+        outline: none;
+        cursor: pointer;
+    }
+
+</style>
+<body>
+    <div class="treinos">
+        <button onclick="callApiAcademia('neck')">Pescoço</button>
+        <button onclick="callApiAcademia('chest')">Peito</button>
+        <button onclick="callApiAcademia('back')">Costas</button>
+        <button onclick="callApiAcademia('waist')">Abdômen</button>
+        <button onclick="callApiAcademia('upper legs')">Quadríceps</button>
+    </div>
+    <div class="treinos">
+        <button onclick="callApiAcademia('upper arms')">Tríceps</button>
+        <button onclick="callApiAcademia('shoulders')">Ombro</button>
+        <button onclick="callApiAcademia('lower legs')">Panturrilha</button>
+        <button onclick="callApiAcademia('lower arms')">Ante-Braço</button>
+    </div>
+
+    <table class="table-consulta-folhas" border="1">
+        <caption>
+            Treino de Pescoço
+        </caption>
+        <thead>
+            <th>Treino</th>
+            <th>equipment</th>
+            <th>name</th>
+            <th>target</th>
+        </thead>
+        <tbody class="containerTable-body">
+            
+        </tbody>
+    </table>
+</body>
+</html>
